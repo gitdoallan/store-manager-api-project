@@ -35,7 +35,25 @@ const findProductById = async (req, res) => {
   }
 };
 
+const newProduct = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const results = await productsServices.newProduct(name);
+    if (results.error) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        message: results.error,
+      });
+    }
+    return res.status(httpStatus.CREATED).json({ id: results.insertId, name });
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER).json({
+      message: 'Erro interno no servidor',
+    });
+  }
+};
+
 module.exports = {
   getAllProducts,
   findProductById,
+  newProduct,
 };

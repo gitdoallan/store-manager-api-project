@@ -12,7 +12,15 @@ const findProductById = async (id) => {
   return product;
 };
 
+const newProduct = async (name) => {
+  if (!name) return { error: 'Nome do produto não informado' };
+  const product = await productsModel.newProduct(name);
+  if (!product) return { error: 'Não foi possível criar o produto' };
+  return product;
+};
+
 module.exports = {
   getAllProducts,
   findProductById,
+  newProduct,
 };
