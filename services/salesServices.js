@@ -40,7 +40,7 @@ const verifyQuantity = async (newSaleArray) => {
 };
 
 const newSale = async (newSaleArray) => {
-  console.log('check node1');
+  console.log('check node333');
   const lastSaleId = await salesModel.getLastSaleId();
   const checkQuantity = await verifyQuantity(newSaleArray);
   if (checkQuantity) return { error: checkQuantity.error, code: checkQuantity.code };
