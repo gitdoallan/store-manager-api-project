@@ -1,4 +1,5 @@
 const productsModel = require('../models/productsModel');
+const httpStatus = require('../helpers/httpStatusCodes');
 
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
@@ -13,9 +14,20 @@ const findProductById = async (id) => {
 };
 
 const newProduct = async (name) => {
-  if (!name) return { error: 'Nome do produto não informado' };
+  if (!name) return { error: '"name" is required' };
+  if (name.length < 5) {
+  return {
+    error: '"name" length must be at least 5 characters long',
+    code: httpStatus.INVALID_ARGUMENT,
+  }; 
+} 
   const product = await productsModel.newProduct(name);
-  if (!product) return { error: 'Não foi possível criar o produto' };
+  if (!product) {
+ return {
+    error: 'Não foi possível criar o produto',
+    code: httpStatus.BAD_REQUEST,
+  }; 
+}
   return product;
 };
 

@@ -40,9 +40,7 @@ const newProduct = async (req, res) => {
   try {
     const results = await productsServices.newProduct(name);
     if (results.error) {
-      return res.status(httpStatus.BAD_REQUEST).json({
-        message: results.error,
-      });
+      return res.status(results.code).json({ message: results.error });
     }
     return res.status(httpStatus.CREATED).json({ id: results.insertId, name });
   } catch (error) {
