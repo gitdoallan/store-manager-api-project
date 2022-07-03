@@ -5,6 +5,7 @@ const newSale = async (req, res) => {
   const newSaleArray = req.body;
   try {
     const results = await salesServices.newSale(newSaleArray);
+    console.log(results);
     if (results.error) {
       return res.status(results.code).json({ message: results.error });
     }

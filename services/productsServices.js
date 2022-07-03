@@ -14,7 +14,6 @@ const findProductById = async (id) => {
 };
 
 const newProduct = async (name) => {
-  if (!name) return { error: '"name" is required' };
   if (name.length < 5) {
   return {
     error: '"name" length must be at least 5 characters long',

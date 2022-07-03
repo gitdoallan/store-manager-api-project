@@ -50,8 +50,7 @@ const newSale = async (newSaleArray) => {
   newSaleArray.forEach(async (e) => {
     await salesModel.newProductSale(lastSaleId, e.productId, e.quantity);
   });
-  const saleArray = { id: lastSaleId + 1, itemsSold: newSaleArray };
-  return saleArray;
+  return { id: lastSaleId + 1, itemsSold: newSaleArray };
 };
 
 module.exports = {

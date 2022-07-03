@@ -37,6 +37,11 @@ const findProductById = async (req, res) => {
 
 const newProduct = async (req, res) => {
   const { name } = req.body;
+  if (!name) {
+    return res.status(httpStatus.BAD_REQUEST).json({
+      message: '"name" is required',
+    }); 
+}
   try {
     const results = await productsServices.newProduct(name);
     if (results.error) {
