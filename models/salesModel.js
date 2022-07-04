@@ -1,17 +1,5 @@
 const connection = require('../helpers/connection');
 
-const getAllSales = async () => {
-  const sales = await connection.query('SELECT * FROM sales');
-  if (!sales) return null;
-  return sales;
-};
-
-const getLastSaleId = async () => {
-  const [[{ id }]] = await connection.query('SELECT MAX(id) AS id FROM sales');
-  if (!id) return 1;
-  return id;
-};
-
 const newSale = async () => {
   const [rows] = await connection
     .execute(`
@@ -30,9 +18,42 @@ const newProductSale = async (saleId, productId, quantity) => {
   return rows;
 };
 
+const getAllSales = async () => {
+  const [sales] = await connection.query(`
+    SELECT S.id AS saleId, S.date, P.product_id AS productId, P.quantity
+    FROM StoreManager.sales S
+    INNER JOIN StoreManager.sales_products P ON S.id = P.sale_id
+    `);
+  if (!sales) return null;
+  return sales;
+};
+
+const findSalesById = async (id) => {
+  const [[sale]] = await connection.query(`
+    SELECT * FROM StoreManager.sales
+    WHERE id = ?
+  `, [id]);
+  if (!sale) return null;
+  const [products] = await connection.query(`
+    SELECT S.date, P.product_id AS productId, P.quantity
+    FROM StoreManager.sales AS S
+    INNER JOIN StoreManager.sales_products AS P
+    ON S.id = P.sale_id
+    WHERE P.sale_id = ?
+  `, [id]);
+  return products;
+};
+
+const getLastSaleId = async () => {
+  const [[{ id }]] = await connection.query('SELECT MAX(id) AS id FROM sales');
+  if (!id) return 1;
+  return id;
+};
+
 module.exports = {
   newSale,
   newProductSale,
   getAllSales,
   getLastSaleId,
+  findSalesById,
 };

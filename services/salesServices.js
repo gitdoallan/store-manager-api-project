@@ -52,6 +52,20 @@ const newSale = async (newSaleArray) => {
   return { id: lastSaleId + 1, itemsSold: newSaleArray };
 };
 
+const getAllSales = async () => {
+  const sales = await salesModel.getAllSales();
+  if (!sales) return { error: 'No sales found', code: httpStatus.NOT_FOUND };
+  return sales;
+};
+
+const findSalesById = async (id) => {
+  const sale = await salesModel.findSalesById(id);
+  if (!sale) return { error: 'Sale not found', code: httpStatus.NOT_FOUND };
+  return sale;
+};
+
 module.exports = {
   newSale,
+  getAllSales,
+  findSalesById,
 };
