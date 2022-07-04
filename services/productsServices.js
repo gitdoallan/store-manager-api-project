@@ -30,8 +30,27 @@ const newProduct = async (name) => {
   return product;
 };
 
+const updateProduct = async (id, name) => {
+  const checkIfIdExists = await findProductById(id);
+  if (!checkIfIdExists) {
+    return {
+      error: 'Product not found',
+      code: httpStatus.NOT_FOUND,
+    };
+  }
+  if (name.length < 5) {
+    return {
+      error: '"name" length must be at least 5 characters long',
+      code: httpStatus.INVALID_ARGUMENT,
+    };
+  }
+  await productsModel.updateProduct(id, name);
+  return { id, name };
+};
+
 module.exports = {
   getAllProducts,
   findProductById,
   newProduct,
+  updateProduct,
 };

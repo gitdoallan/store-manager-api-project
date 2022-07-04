@@ -55,8 +55,30 @@ const newProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  if (!name) {
+    return res.status(httpStatus.BAD_REQUEST).json({
+      message: '"name" is required',
+    });
+  }
+  try {
+    const results = await productsServices.updateProduct(id, name);
+    if (results.error) {
+      return res.status(results.code).json({ message: results.error });
+    }
+    return res.status(httpStatus.OK).json({ id, name });
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER).json({
+      message: 'Erro interno no servidor',
+    });
+  }
+};
+
 module.exports = {
   getAllProducts,
   findProductById,
   newProduct,
+  updateProduct,
 };
