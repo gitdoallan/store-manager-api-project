@@ -45,7 +45,11 @@ const findSalesById = async (id) => {
 };
 
 const getLastSaleId = async () => {
-  const [[{ id }]] = await connection.query('SELECT MAX(id) AS id FROM sales');
+  const [[{ id }]] = await connection.query(`
+    SELECT id FROM StoreManager.sales
+    ORDER BY id DESC
+    LIMIT 1
+  `);
   if (!id) return 1;
   return id;
 };
