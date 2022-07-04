@@ -13,6 +13,12 @@ const findProductById = async (id) => {
   return product;
 };
 
+const searchProduct = async (name) => {
+  const products = await productsModel.searchProduct(name);
+  if (!products) return [];
+  return products;
+};
+
 const newProduct = async (name) => {
   if (name.length < 5) {
   return {
@@ -66,4 +72,5 @@ module.exports = {
   newProduct,
   updateProduct,
   deleteProduct,
+  searchProduct,
 };

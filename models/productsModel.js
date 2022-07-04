@@ -20,6 +20,16 @@ const findProductById = async (id) => {
   return rows[0];
 };
 
+const searchProduct = async (name) => {
+  const [rows] = await connection
+    .execute(`
+      SELECT id, name
+      FROM StoreManager.products
+      WHERE name LIKE ?
+    `, [`%${name}%`]);
+  return rows;
+};
+
 const newProduct = async (name) => {
   const [rows] = await connection
     .execute(`
@@ -54,4 +64,5 @@ module.exports = {
   newProduct,
   updateProduct,
   deleteProduct,
+  searchProduct,
 };

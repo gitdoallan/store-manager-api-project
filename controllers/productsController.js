@@ -36,6 +36,18 @@ const findProductById = async (req, res) => {
   }
 };
 
+const searchProduct = async (req, res) => {
+  const { q } = req.query;
+  try {
+    const results = await productsServices.searchProduct(q);
+    return res.status(httpStatus.OK).json(results);
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER).json({
+      message: messages.INTERNAL_SERVER_ERROR_MSG,
+    });
+  }
+};
+
 const newProduct = async (req, res) => {
   const { name } = req.body;
   if (!name) {
@@ -98,4 +110,5 @@ module.exports = {
   newProduct,
   updateProduct,
   deleteProduct,
+  searchProduct,
 };
