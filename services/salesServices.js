@@ -64,6 +64,37 @@ const findSalesById = async (id) => {
   return sale;
 };
 
+const checkUpdated = async (id, updatedArray) => {
+  updatedArray.forEach(async (e) => {
+    if (!e.quantity) {
+      return {
+        error: '"quantity" is required',
+        code: httpStatus.BAD_REQUEST,
+      };
+    }
+    if (!e.productId) {
+      return {
+        error: '"productId" is required',
+        code: httpStatus.BAD_REQUEST,
+      };
+    }
+    await salesModel.updateSalesById(id, e.productId, e.quantity);
+  });
+  return false;
+};
+
+const updateSalesById = async (id, updatedArray) => {
+  const checkQuantity = await verifyQuantity(updatedArray);
+  if (checkQuantity) return { error: checkQuantity.error, code: checkQuantity.code };
+  const checkProductId = await verifyProducts(updatedArray);
+  if (checkProductId) return { error: checkProductId.error, code: checkProductId.code };
+  const result = await checkUpdated(id, updatedArray);
+  if (result) return result;
+  const findSale = await findSalesById(id);
+  if (findSale.error) return findSale;
+  return { saleId: id, itemsUpdated: updatedArray };
+};
+
 const deleteSalesById = async (id) => {
   const sale = await salesModel.findSalesById(id);
   if (!sale) return { error: 'Sale not found', code: httpStatus.NOT_FOUND };
@@ -76,4 +107,5 @@ module.exports = {
   getAllSales,
   findSalesById,
   deleteSalesById,
+  updateSalesById,
 };

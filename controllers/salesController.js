@@ -46,6 +46,19 @@ const findSalesById = async (req, res) => {
   }
 };
 
+const updateSalesById = async (req, res) => {
+  const { id } = req.params; const newSaleArray = req.body;
+  try {
+    const results = await salesServices.updateSalesById(id, newSaleArray);
+    if (results.error) return res.status(results.code).json({ message: results.error });
+    return res.status(httpStatus.OK).json(results);
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER).json({
+      message: messages.INTERNAL_SERVER_ERROR_MSG,
+    });
+  }
+};
+
 const deleteSalesById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -66,4 +79,5 @@ module.exports = {
   getAllSales,
   findSalesById,
   deleteSalesById,
+  updateSalesById,
 };
