@@ -78,6 +78,7 @@ const checkUpdated = async (id, updatedArray) => {
         code: httpStatus.BAD_REQUEST,
       };
     }
+    // TODO: mandar para middleware
     await salesModel.updateSalesById(id, e.productId, e.quantity);
   });
   return false;

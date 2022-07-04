@@ -3,20 +3,17 @@ const httpStatus = require('../helpers/httpStatusCodes');
 
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
-  if (!products) return null;
-  return products;
+  return products || null;
 };
 
 const findProductById = async (id) => {
   const product = await productsModel.findProductById(id);
-  if (!product) return null;
-  return product;
+  return product || null;
 };
 
 const searchProduct = async (name) => {
   const products = await productsModel.searchProduct(name);
-  if (!products) return [];
-  return products;
+  return products || [];
 };
 
 const newProduct = async (name) => {
@@ -28,7 +25,7 @@ const newProduct = async (name) => {
 } 
   const product = await productsModel.newProduct(name);
   if (!product) {
- return {
+  return {
     error: 'Não foi possível criar o produto',
     code: httpStatus.BAD_REQUEST,
   }; 
@@ -65,6 +62,8 @@ const deleteProduct = async (id) => {
   const result = await productsModel.deleteProduct(id);
   return result;
 };
+
+// TODO: Regras do emersu || tudo que chama o banco, pode manter aqui, o resto bota em middleware.
 
 module.exports = {
   getAllProducts,

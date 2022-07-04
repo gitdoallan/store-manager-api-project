@@ -7,6 +7,7 @@ const newSale = async () => {
       VALUES (NOW())
     `);
   return rows;
+  // TODO: refatorar com rows.insertId;
 };
 
 const newProductSale = async (saleId, productId, quantity) => {
