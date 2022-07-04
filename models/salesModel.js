@@ -50,10 +50,19 @@ const getLastSaleId = async () => {
   return id;
 };
 
+const deleteSalesById = async (id) => {
+  const [rows] = await connection.query(`
+    DELETE FROM StoreManager.sales
+    WHERE id = ?
+  `, [id]);
+  return rows;
+};
+
 module.exports = {
   newSale,
   newProductSale,
   getAllSales,
   getLastSaleId,
   findSalesById,
+  deleteSalesById,
 };

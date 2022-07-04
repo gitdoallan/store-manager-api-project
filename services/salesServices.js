@@ -64,8 +64,16 @@ const findSalesById = async (id) => {
   return sale;
 };
 
+const deleteSalesById = async (id) => {
+  const sale = await salesModel.findSalesById(id);
+  if (!sale) return { error: 'Sale not found', code: httpStatus.NOT_FOUND };
+  const result = await salesModel.deleteSalesById(id);
+  return result;
+};
+
 module.exports = {
   newSale,
   getAllSales,
   findSalesById,
+  deleteSalesById,
 };
